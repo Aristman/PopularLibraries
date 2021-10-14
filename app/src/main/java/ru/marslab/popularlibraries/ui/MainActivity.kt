@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
+import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.databinding.ActivityMainBinding
 import ru.marslab.popularlibraries.model.CounterButton
-import ru.marslab.popularlibraries.presenter.MainPresenter
 import ru.marslab.popularlibraries.view.MainView
 
 private const val COUNTERS_ARRAY_TAG = "COUNTERS_ARRAY_TAG"
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private val presenter by lazy { MainPresenter() }
+    private val presenter by lazy { App().getPresenter() }
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
