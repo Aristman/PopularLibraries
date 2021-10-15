@@ -1,7 +1,11 @@
 package ru.marslab.popularlibraries.view
 
-import ru.marslab.popularlibraries.model.CounterButton
+import moxy.MvpView
+import moxy.viewstate.strategy.alias.AddToEndSingle
+import ru.marslab.popularlibraries.model.GithubUser
 
-interface MainView {
-    fun setButtonText(button: CounterButton?, text: String)
+interface MainView : MvpView {
+
+    @AddToEndSingle
+    fun displayUser(user: GithubUser)
 }
