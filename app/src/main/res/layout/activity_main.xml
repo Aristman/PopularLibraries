@@ -8,43 +8,43 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tv_1"
+        android:id="@+id/tv_counter_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/counter_one" />
 
     <Button
-        android:id="@+id/btn_counter1"
+        android:id="@+id/btn_counter_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/init_button_text"
-        app:layout_constraintTop_toBottomOf="@id/tv_1" />
+        app:layout_constraintTop_toBottomOf="@id/tv_counter_one" />
 
     <TextView
-        android:id="@+id/tv_2"
+        android:id="@+id/tv_counter_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/counter_two"
-        app:layout_constraintTop_toBottomOf="@id/btn_counter1" />
+        app:layout_constraintTop_toBottomOf="@id/btn_counter_one" />
 
     <Button
-        android:id="@+id/btn_counter2"
+        android:id="@+id/btn_counter_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/init_button_text"
-        app:layout_constraintTop_toBottomOf="@id/tv_2" />
+        app:layout_constraintTop_toBottomOf="@id/tv_counter_two" />
 
     <TextView
-        android:id="@+id/tv_3"
+        android:id="@+id/tv_counter_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/counter_three"
-        app:layout_constraintTop_toBottomOf="@id/btn_counter2" />
+        app:layout_constraintTop_toBottomOf="@id/btn_counter_two" />
 
     <Button
-        android:id="@+id/btn_counter3"
+        android:id="@+id/btn_counter_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/init_button_text"
-        app:layout_constraintTop_toBottomOf="@id/tv_3" />
+        app:layout_constraintTop_toBottomOf="@id/tv_counter_three" />
 </LinearLayout>
