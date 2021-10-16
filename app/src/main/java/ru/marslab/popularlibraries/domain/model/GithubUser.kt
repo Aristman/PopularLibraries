@@ -1,10 +1,10 @@
-package ru.marslab.popularlibraries.model
+package ru.marslab.popularlibraries.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GithubUser(
-    val name: String,
+    val login: String,
     val password: String
 ) : Parcelable

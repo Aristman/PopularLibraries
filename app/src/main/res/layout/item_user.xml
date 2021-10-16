@@ -10,11 +10,11 @@
     app:cardCornerRadius="@dimen/card_default_radius">
 
     <TextView
-        android:id="@+id/tv_user_name"
+        android:id="@+id/tv_user_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/user_card_margin"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        tools:text="Имя пользователя" />
+        tools:text="Логин пользователя" />
 
 </androidx.cardview.widget.CardView>
