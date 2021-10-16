@@ -1,25 +1,20 @@
 package ru.marslab.popularlibraries.domain.presenter
 
+import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
-import ru.marslab.popularlibraries.domain.repository.GithubRepository
+import ru.marslab.popularlibraries.ui.screen.IScreens
 import ru.marslab.popularlibraries.ui.view.MainView
 
-class MainPresenter(private val userRepository: GithubRepository) : MvpPresenter<MainView>() {
-    val userListPresenter = UserListPresenter()
+class MainPresenter(private val router: Router, private val screens: IScreens) :
+    MvpPresenter<MainView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.init()
-        loadData()
-        userListPresenter.itemClickListener = { userItemView ->
-            // TODO("Переход на экран детализации юзера")
-        }
+        router.newRootScreen(screens.users())
     }
 
-    private fun loadData() {
-        val users = userRepository.getUsers()
-        userListPresenter.users.addAll(users)
-        viewState.updateList()
+    fun backClicked() {
+        router.exit()
     }
 }
 

@@ -1,15 +1,15 @@
 package ru.marslab.popularlibraries.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import ru.marslab.popularlibraries.data.repository.GithubRepositoryMocImpl
+import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.databinding.ActivityMainBinding
 import ru.marslab.popularlibraries.domain.presenter.MainPresenter
-import ru.marslab.popularlibraries.ui.adapter.UserRVAdapter
+import ru.marslab.popularlibraries.ui.screen.Screens
+import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.view.MainView
 
 class MainActivity : MvpAppCompatActivity(), MainView {
@@ -18,27 +18,31 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         ActivityMainBinding.inflate(LayoutInflater.from(this))
     }
 
-    private val presenter by moxyPresenter { MainPresenter(GithubRepositoryMocImpl()) }
-
-    private val userRVAdapter: UserRVAdapter by lazy {
-        UserRVAdapter(presenter.userListPresenter)
-    }
+    private val navigator = AppNavigator(this, binding.mainContainer.id)
+    private val presenter by moxyPresenter { MainPresenter(App.instance.router, Screens()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
     }
 
-    override fun init() {
-        binding.rvUsers.run {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = userRVAdapter
-        }
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun updateList() {
-        userRVAdapter.notifyDataSetChanged()
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigatorHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+        supportFragmentManager.fragments.forEach {
+            if (it is BackButtonListener && it.onBackPressed()) {
+                return
+            }
+            presenter.backClicked()
+        }
     }
 }
 
