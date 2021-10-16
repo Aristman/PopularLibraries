@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
     android:layout_margin="@dimen/user_card_margin"
-    android:background="?selectableItemBackground"
     android:elevation="@dimen/card_default_elevation"
     app:cardCornerRadius="@dimen/card_default_radius">
 

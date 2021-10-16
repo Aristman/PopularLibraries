@@ -1,4 +1,4 @@
-package ru.marslab.popularlibraries.ui
+package ru.marslab.popularlibraries.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,6 +13,7 @@ import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUsersBinding
 import ru.marslab.popularlibraries.domain.presenter.UsersPresenter
 import ru.marslab.popularlibraries.ui.adapter.UserRVAdapter
+import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.view.UsersView
 
@@ -29,7 +30,8 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter by moxyPresenter {
         UsersPresenter(
             App.instance.githubRepository,
-            App.instance.router
+            App.instance.router,
+            Screens()
         )
     }
 
