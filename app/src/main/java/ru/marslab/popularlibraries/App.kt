@@ -1,13 +1,27 @@
 package ru.marslab.popularlibraries
 
 import android.app.Application
-import ru.marslab.popularlibraries.presenter.MainPresenter
-import ru.marslab.popularlibraries.presenter.MainPresenterImpl
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.Router
+import ru.marslab.popularlibraries.data.repository.GithubRepositoryMocImpl
+import ru.marslab.popularlibraries.domain.repository.GithubRepository
 
 class App : Application() {
+    companion object {
+        lateinit var instance: App
+    }
 
-    private val presenter: MainPresenter = MainPresenterImpl()
+    private val cicerone: Cicerone<Router> by lazy {
+        Cicerone.create()
+    }
 
-    fun getPresenter(): MainPresenter =
-        presenter
+    val navigatorHolder = cicerone.getNavigatorHolder()
+    val router = cicerone.router
+    val githubRepository: GithubRepository = GithubRepositoryMocImpl()
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
 }
