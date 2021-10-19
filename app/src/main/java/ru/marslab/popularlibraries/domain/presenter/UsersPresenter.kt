@@ -1,10 +1,12 @@
 package ru.marslab.popularlibraries.domain.presenter
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.android.schedulers.AndroidSchedulers
 import moxy.MvpPresenter
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
 import ru.marslab.popularlibraries.ui.view.UsersView
+import kotlin.concurrent.thread
 
 class UsersPresenter(
     private val userRepository: GithubRepository,
@@ -24,9 +26,26 @@ class UsersPresenter(
     }
 
     private fun loadData() {
-        val users = userRepository.getUsers()
-        userListPresenter.users.addAll(users)
-        viewState.updateList()
+        viewState.showLoading()
+        thread {
+            val subscribe = userRepository.getUsers()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        userListPresenter.users.addAll(it)
+                        viewState.updateList()
+                        viewState.showMainContent()
+                    },
+                    {
+                        viewState.showErrorToast(it.message)
+                        viewState.showReload()
+                    }
+                )
+        }
+    }
+
+    fun reloadData() {
+        loadData()
     }
 
     fun backPressed(): Boolean {
