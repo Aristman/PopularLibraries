@@ -2,6 +2,7 @@ package ru.marslab.popularlibraries.domain.presenter
 
 import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
@@ -29,7 +30,8 @@ class UsersPresenter(
         viewState.showLoading()
         thread {
             val subscribe = userRepository.getUsers()
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         userListPresenter.users.addAll(it)
