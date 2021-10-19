@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -49,6 +50,17 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun init() {
+        initRV()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.btnReload.setOnClickListener {
+            presenter.reloadData()
+        }
+    }
+
+    private fun initRV() {
         binding.rvUsers.run {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = userRVAdapter
@@ -58,6 +70,34 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     @SuppressLint("NotifyDataSetChanged")
     override fun updateList() {
         userRVAdapter.notifyDataSetChanged()
+    }
+
+    override fun showErrorToast(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showLoading() {
+        binding.run {
+            loadingIndicator.visibility = View.VISIBLE
+            rvUsers.visibility = View.GONE
+            btnReload.visibility = View.GONE
+        }
+    }
+
+    override fun showReload() {
+        binding.run {
+            loadingIndicator.visibility = View.GONE
+            rvUsers.visibility = View.GONE
+            btnReload.visibility = View.VISIBLE
+        }
+    }
+
+    override fun showMainContent() {
+        binding.run {
+            loadingIndicator.visibility = View.GONE
+            rvUsers.visibility = View.VISIBLE
+            btnReload.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

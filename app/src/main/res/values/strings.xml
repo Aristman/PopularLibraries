@@ -5,4 +5,5 @@
     <string name="counter_three">Счетчик 3</string>
     <string name="init_button_text">0</string>
     <string name="binding_create_error">Ошибка создания биндинга: %s</string>
+    <string name="repeat_loading">Повторить загрузку</string>
 </resources>
