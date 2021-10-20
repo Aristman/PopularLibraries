@@ -1,8 +1,8 @@
 package ru.marslab.popularlibraries.domain.presenter
 
+import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
@@ -26,11 +26,11 @@ class UsersPresenter(
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun loadData() {
         viewState.showLoading()
         thread {
-            val subscribe = userRepository.getUsers()
-                .subscribeOn(Schedulers.io())
+            userRepository.getUsers()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {

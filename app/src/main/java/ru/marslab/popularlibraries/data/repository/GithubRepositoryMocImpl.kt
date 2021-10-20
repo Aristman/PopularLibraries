@@ -1,6 +1,7 @@
 package ru.marslab.popularlibraries.data.repository
 
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.repository.Constant
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
@@ -18,10 +19,12 @@ class GithubRepositoryMocImpl : GithubRepository {
     override fun getUsers(): Observable<List<GithubUser>> {
         val variantResponse = Random.nextInt(MAX_PERCENT)
         Thread.sleep(LOAD_DELAY)
-        return if (variantResponse > PERCENT_SUCCESSFUL_REQUEST) {
-            Observable.just(users)
-        } else {
-            Observable.error(Throwable(Constant.DATA_LOAD_ERROR))
-        }
+        return Observable.fromCallable {
+            if (variantResponse > PERCENT_SUCCESSFUL_REQUEST) {
+                users
+            } else {
+                error(Constant.DATA_LOAD_ERROR)
+            }
+        }.subscribeOn(Schedulers.io())
     }
 }
