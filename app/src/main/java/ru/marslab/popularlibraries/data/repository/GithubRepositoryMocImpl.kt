@@ -5,6 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.repository.Constant
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 private const val PERCENT_SUCCESSFUL_REQUEST = 50
@@ -18,13 +19,18 @@ class GithubRepositoryMocImpl : GithubRepository {
 
     override fun getUsers(): Observable<List<GithubUser>> {
         val variantResponse = Random.nextInt(MAX_PERCENT)
-        Thread.sleep(LOAD_DELAY)
-        return Observable.fromCallable {
-            if (variantResponse > PERCENT_SUCCESSFUL_REQUEST) {
-                users
-            } else {
-                error(Constant.DATA_LOAD_ERROR)
+        return Observable
+            .fromCallable {
+                if (variantResponse > PERCENT_SUCCESSFUL_REQUEST) {
+                    users
+                } else {
+                    error(Constant.DATA_LOAD_ERROR)
+                }
             }
-        }.subscribeOn(Schedulers.io())
+            .delay(LOAD_DELAY, TimeUnit.MILLISECONDS)
+            .doOnError {
+                Thread.sleep(LOAD_DELAY)
+            }
+            .subscribeOn(Schedulers.io())
     }
 }

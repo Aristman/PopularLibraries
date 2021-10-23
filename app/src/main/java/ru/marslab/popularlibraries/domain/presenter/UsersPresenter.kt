@@ -7,7 +7,6 @@ import moxy.MvpPresenter
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
 import ru.marslab.popularlibraries.ui.view.UsersView
-import kotlin.concurrent.thread
 
 class UsersPresenter(
     private val userRepository: GithubRepository,
@@ -29,23 +28,21 @@ class UsersPresenter(
     @SuppressLint("CheckResult")
     private fun loadData() {
         viewState.showLoading()
-        thread {
-            userRepository.getUsers()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        userListPresenter.users.addAll(it)
-                        viewState.updateList()
-                    },
-                    {
-                        viewState.showErrorToast(it.message)
-                        viewState.showReload()
-                    },
-                    {
-                        viewState.showMainContent()
-                    }
-                )
-        }
+        userRepository.getUsers()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    userListPresenter.users.addAll(it)
+                    viewState.updateList()
+                },
+                {
+                    viewState.showErrorToast(it.message)
+                    viewState.showReload()
+                },
+                {
+                    viewState.showMainContent()
+                }
+            )
     }
 
     fun reloadData() {
