@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ImageConverter</string>
+    <string name="image_convert">Конвертация JPG-PNG</string>
 </resources>
