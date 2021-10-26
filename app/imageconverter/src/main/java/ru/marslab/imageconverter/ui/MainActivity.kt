@@ -23,6 +23,8 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     private fun initListeners() {
-        TODO("Not yet implemented")
+        binding.btnConvertJpgPng.setOnClickListener {
+            mainPresenter.convertJpgToPng("")
+        }
     }
 }

@@ -8,4 +8,8 @@ class MainPresenter(
     private val mainRepository: MainRepository
 ) : MvpPresenter<MainView>() {
 
+    fun convertJpgToPng(image: String) {
+//        mainRepository.convertJpgToPng(image)
+    }
+
 }
