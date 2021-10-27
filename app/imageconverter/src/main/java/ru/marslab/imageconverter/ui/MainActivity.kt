@@ -1,6 +1,9 @@
 package ru.marslab.imageconverter.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.marslab.imageconverter.App
@@ -22,9 +25,38 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         initListeners()
     }
 
+    @SuppressLint("NewApi")
     private fun initListeners() {
         binding.btnConvertJpgPng.setOnClickListener {
-            mainPresenter.convertJpgToPng("")
+            mainPresenter.convertJpgToPng(dataDir.absolutePath + "/Curiosity_middle")
         }
+    }
+
+    override fun init() {
+        hideInfoBlock()
+    }
+
+    override fun showInfoBlock() {
+        binding.loadingGroup.visibility = View.VISIBLE
+    }
+
+    override fun hideInfoBlock() {
+        binding.loadingGroup.visibility = View.GONE
+    }
+
+    override fun setLoadProgress(progress: Int) {
+        binding.loadingProgress.progress = progress
+    }
+
+    override fun setStageText(text: String) {
+        binding.convertStage.text = text
+    }
+
+    override fun showErrorToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun isEnableConvertButton(isEnabled: Boolean) {
+        binding.btnConvertJpgPng.isEnabled = isEnabled
     }
 }

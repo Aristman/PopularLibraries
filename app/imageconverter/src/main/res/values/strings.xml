@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ImageConverter</string>
     <string name="image_convert">Конвертация JPG-PNG</string>
+    <string name="permission_title">Разрешение - заголовок</string>
+    <string name="permission_message">Нужны разрешения</string>
+    <string name="cancel">Отмена</string>
 </resources>

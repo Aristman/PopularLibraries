@@ -1,30 +1,58 @@
 package ru.marslab.imageconverter.data.repository
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import ru.marslab.imageconverter.domain.logD
+import ru.marslab.imageconverter.domain.model.ImageStatus
 import ru.marslab.imageconverter.domain.model.ImageType
 import ru.marslab.imageconverter.domain.repository.MainRepository
-import java.io.File
-import java.util.concurrent.TimeUnit
+import java.io.FileOutputStream
 
-private const val LOAD_DELAY = 1000L
+private const val LOAD_DELAY = 40L
+private const val CONVERT_ERROR = "Ошибка преобразование в "
+private const val PNG_QUANTITY = 75
 
-class MainRepositoryImpl : MainRepository {
-    override fun loadImage(image: String, type: ImageType): Single<Bitmap> =
-        Single
-            .fromCallable {
-                val file = File(image)
-                BitmapFactory.decodeFile(file.absolutePath)
+class MainRepositoryImpl() : MainRepository {
+    @SuppressLint("NewApi")
+    override fun loadImage(image: String, type: ImageType): Observable<ImageStatus> =
+        Observable
+            .create<ImageStatus> { emitter ->
+                (0..100).map {
+                    emitter.onNext(ImageStatus.Loading(it))
+                    Thread.sleep(LOAD_DELAY)
+                }
+                emitter.onNext(
+                    ImageStatus.Successful(
+                        BitmapFactory.decodeFile(image + type.ext)
+                    )
+                )
+                emitter.onComplete()
             }
-            .doOnSuccess {
-                logD("load onSuccess: $it")
+            .subscribeOn(Schedulers.io())
+
+    override fun convertToPng(
+        image: String,
+        imageType: ImageType,
+        bitmapSource: Bitmap?
+    ): Observable<ImageStatus> =
+        Observable
+            .create<ImageStatus> { emitter ->
+                (0..100).map {
+                    emitter.onNext(ImageStatus.Loading(it))
+                    Thread.sleep(LOAD_DELAY / 10)
+                }
+                val convertResult = bitmapSource?.compress(
+                    Bitmap.CompressFormat.PNG,
+                    PNG_QUANTITY,
+                    FileOutputStream(image + imageType.ext)
+                )
+                if (convertResult == null || !convertResult) {
+                    emitter.onError(Throwable(CONVERT_ERROR + imageType.ext))
+                } else {
+                    emitter.onComplete()
+                }
             }
-            .doOnError {
-                logD("load onError: ${it.message}")
-            }
-            .delay(LOAD_DELAY, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
 }

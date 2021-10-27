@@ -1,6 +1,6 @@
 package ru.marslab.imageconverter.domain.model
 
-sealed class ImageType {
-    object Jpg : ImageType()
-    object Png : ImageType()
+sealed class ImageType(val ext: String) {
+    object Jpg : ImageType(".jpg")
+    object Png : ImageType(".png")
 }
