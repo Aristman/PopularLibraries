@@ -62,15 +62,15 @@ class MainPresenter(
                         convertingImage(convertResult)
                     },
                     {
-                    convertImageError()
-                },
-                {
-                    convertSuccessful()
-                },
-                {
-                    convertInit()
-                }
-            )
+                        convertImageError()
+                    },
+                    {
+                        convertSuccessful()
+                    },
+                    {
+                        convertInit()
+                    }
+                )
         )
     }
 

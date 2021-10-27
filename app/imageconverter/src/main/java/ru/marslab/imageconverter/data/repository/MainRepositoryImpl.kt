@@ -11,6 +11,8 @@ import ru.marslab.imageconverter.domain.repository.MainRepository
 import java.io.FileOutputStream
 
 private const val LOAD_DELAY = 40L
+private const val DELAY_DIVIDER = 10
+private const val MAX_PERCENT = 100
 private const val CONVERT_ERROR = "Ошибка преобразование в "
 private const val PNG_QUANTITY = 75
 
@@ -19,7 +21,7 @@ class MainRepositoryImpl() : MainRepository {
     override fun loadImage(image: String, type: ImageType): Observable<ImageStatus> =
         Observable
             .create<ImageStatus> { emitter ->
-                (0..100).map {
+                (0..MAX_PERCENT).map {
                     emitter.onNext(ImageStatus.Loading(it))
                     Thread.sleep(LOAD_DELAY)
                 }
@@ -39,9 +41,9 @@ class MainRepositoryImpl() : MainRepository {
     ): Observable<ImageStatus> =
         Observable
             .create<ImageStatus> { emitter ->
-                (0..100).map {
+                (0..MAX_PERCENT).map {
                     emitter.onNext(ImageStatus.Loading(it))
-                    Thread.sleep(LOAD_DELAY / 10)
+                    Thread.sleep(LOAD_DELAY / DELAY_DIVIDER)
                 }
                 val convertResult = bitmapSource?.compress(
                     Bitmap.CompressFormat.PNG,

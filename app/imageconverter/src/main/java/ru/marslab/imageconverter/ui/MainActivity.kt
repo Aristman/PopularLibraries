@@ -11,6 +11,8 @@ import ru.marslab.imageconverter.databinding.ActivityMainBinding
 import ru.marslab.imageconverter.domain.presenter.MainPresenter
 import ru.marslab.imageconverter.ui.view.MainView
 
+private const val IMAGE_FILE_NAME = "/Curiosity_middle"
+
 class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val binding: ActivityMainBinding by lazy {
@@ -29,7 +31,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private fun initListeners() {
         binding.run {
             btnConvertJpgPng.setOnClickListener {
-                mainPresenter.convertJpgToPng(dataDir.absolutePath + "/Curiosity_middle")
+                mainPresenter.convertJpgToPng(dataDir.absolutePath + IMAGE_FILE_NAME)
             }
             btnCancel.setOnClickListener {
                 mainPresenter.cancelAllJobs()
