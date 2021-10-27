@@ -27,8 +27,13 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     @SuppressLint("NewApi")
     private fun initListeners() {
-        binding.btnConvertJpgPng.setOnClickListener {
-            mainPresenter.convertJpgToPng(dataDir.absolutePath + "/Curiosity_middle")
+        binding.run {
+            btnConvertJpgPng.setOnClickListener {
+                mainPresenter.convertJpgToPng(dataDir.absolutePath + "/Curiosity_middle")
+            }
+            btnCancel.setOnClickListener {
+                mainPresenter.cancelAllJobs()
+            }
         }
     }
 

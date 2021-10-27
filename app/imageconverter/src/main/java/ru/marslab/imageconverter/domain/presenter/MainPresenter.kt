@@ -30,11 +30,9 @@ class MainPresenter(
     }
 
     fun convertJpgToPng(image: String) {
-        disposable.add(
+        disposable.addAll(
             mainRepository.loadImage(image, ImageType.Jpg)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                }
                 .subscribe(
                     { loadingResult ->
                         loadingImage(loadingResult)
@@ -52,17 +50,18 @@ class MainPresenter(
     }
 
     private fun convertToPng(image: String) {
-        disposable.add(mainRepository.convertToPng(
-            image,
-            ImageType.Png,
-            bitmapSource
-        )
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { convertResult ->
-                    convertingImage(convertResult)
-                },
-                {
+        disposable.addAll(
+            mainRepository.convertToPng(
+                image,
+                ImageType.Png,
+                bitmapSource
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { convertResult ->
+                        convertingImage(convertResult)
+                    },
+                    {
                     convertImageError()
                 },
                 {
@@ -76,13 +75,17 @@ class MainPresenter(
     }
 
     private fun convertInit() {
-        viewState.showInfoBlock()
-        viewState.setStageText(CONVERT_TO_PNG)
+        viewState.run {
+            showInfoBlock()
+            setStageText(CONVERT_TO_PNG)
+        }
     }
 
     private fun convertSuccessful() {
-        viewState.isEnableConvertButton(true)
-        viewState.setStageText(CONVERT_COMPLETE)
+        viewState.run {
+            isEnableConvertButton(true)
+            setStageText(CONVERT_COMPLETE)
+        }
     }
 
     private fun convertingImage(convertResult: ImageStatus?) {
@@ -92,13 +95,17 @@ class MainPresenter(
     }
 
     private fun convertImageError() {
-        viewState.isEnableConvertButton(true)
-        viewState.showErrorToast(CONVERT_ERROR)
+        viewState.run {
+            isEnableConvertButton(true)
+            showErrorToast(CONVERT_ERROR)
+        }
     }
 
     private fun loadingError() {
-        viewState.showErrorToast(LOAD_ERROR)
-        viewState.hideInfoBlock()
+        viewState.run {
+            showErrorToast(LOAD_ERROR)
+            hideInfoBlock()
+        }
     }
 
     private fun loadingInit() {
@@ -124,5 +131,13 @@ class MainPresenter(
     override fun onDestroy() {
         disposable.clear()
         super.onDestroy()
+    }
+
+    fun cancelAllJobs() {
+        disposable.clear()
+        viewState.run {
+            hideInfoBlock()
+            isEnableConvertButton(true)
+        }
     }
 }
