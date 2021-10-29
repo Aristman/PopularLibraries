@@ -1,8 +1,11 @@
 package ru.marslab.popularlibraries.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class GithubUserNW(
     @SerializedName("avatar_url")
     val avatarUrl: String,
@@ -40,4 +43,4 @@ data class GithubUserNW(
     val type: String,
     @SerializedName("url")
     val url: String
-)
+) : Parcelable

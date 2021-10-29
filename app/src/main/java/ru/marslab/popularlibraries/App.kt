@@ -3,7 +3,7 @@ package ru.marslab.popularlibraries
 import android.app.Application
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
-import ru.marslab.popularlibraries.data.repository.GithubRepositoryMocImpl
+import ru.marslab.popularlibraries.data.repository.GithubRepositoryImpl
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 
 class App : Application() {
@@ -17,7 +17,7 @@ class App : Application() {
 
     val navigatorHolder = cicerone.getNavigatorHolder()
     val router = cicerone.router
-    val githubRepository: GithubRepository = GithubRepositoryMocImpl()
+    val githubRepository: GithubRepository = GithubRepositoryImpl()
 
     override fun onCreate() {
         super.onCreate()

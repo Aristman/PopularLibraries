@@ -15,7 +15,7 @@ private const val COUNT_USERS = 55
 
 class GithubRepositoryMocImpl : GithubRepository {
     private val users: List<GithubUser> =
-        (0..COUNT_USERS).map { GithubUser("User $it") }
+        (0..COUNT_USERS).map { GithubUser(it, "User $it", null) }
 
     override fun getUsers(): Single<List<GithubUser>> {
         val variantResponse = Random.nextInt(MAX_PERCENT)
