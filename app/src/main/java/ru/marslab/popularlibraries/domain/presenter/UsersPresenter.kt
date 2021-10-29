@@ -34,13 +34,12 @@ class UsersPresenter(
                 {
                     userListPresenter.users.addAll(it)
                     viewState.updateList()
+                    viewState.showMainContent()
+
                 },
                 {
                     viewState.showErrorToast(it.message)
                     viewState.showReload()
-                },
-                {
-                    viewState.showMainContent()
                 }
             )
     }
