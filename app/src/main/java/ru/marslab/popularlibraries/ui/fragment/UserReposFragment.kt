@@ -1,9 +1,11 @@
 package ru.marslab.popularlibraries.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -11,7 +13,8 @@ import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
-import ru.marslab.popularlibraries.domain.presenter.ReposPresenter
+import ru.marslab.popularlibraries.domain.presenter.UserReposPresenter
+import ru.marslab.popularlibraries.ui.adapter.ReposRVAdapter
 import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.view.UserReposView
@@ -34,11 +37,21 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
     private val presenter by moxyPresenter {
-        ReposPresenter(
+        UserReposPresenter(
             App.instance.githubRepository,
             App.instance.router,
             Screens()
         )
+    }
+
+    private fun initListeners() {
+        binding.btnReload.setOnClickListener {
+            presenter.reloadData()
+        }
+    }
+
+    private val reposRVAdapter: ReposRVAdapter by lazy {
+        ReposRVAdapter(presenter.repoListPresenter)
     }
 
     override fun onCreateView(
@@ -52,27 +65,44 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
 
     override fun init() {
         presenter.user = arguments?.getParcelable(USER_TAG)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = presenter.user?.login
+        setToolbarTitle(presenter.user?.login)
     }
 
+    private fun setToolbarTitle(text: String?) {
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = text
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun updateList() {
-        TODO("Not yet implemented")
+        reposRVAdapter.notifyDataSetChanged()
     }
 
     override fun showErrorToast(message: String?) {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
+        binding.run {
+            loadingIndicator.visibility = View.VISIBLE
+            userRepos.visibility = View.GONE
+            btnReload.visibility = View.GONE
+        }
     }
 
     override fun showReload() {
-        TODO("Not yet implemented")
+        binding.run {
+            loadingIndicator.visibility = View.GONE
+            userRepos.visibility = View.GONE
+            btnReload.visibility = View.VISIBLE
+        }
     }
 
     override fun showMainContent() {
-        TODO("Not yet implemented")
+        binding.run {
+            loadingIndicator.visibility = View.GONE
+            userRepos.visibility = View.VISIBLE
+            btnReload.visibility = View.GONE
+        }
     }
 
     override fun onBackPressed(): Boolean =
@@ -83,3 +113,4 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
         super.onDestroyView()
     }
 }
+

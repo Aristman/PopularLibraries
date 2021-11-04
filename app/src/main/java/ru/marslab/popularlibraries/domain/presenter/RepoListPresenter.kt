@@ -8,13 +8,11 @@ class RepoListPresenter : IRepoListPresenter {
     override var itemClickListener: ((RepoItemView) -> Unit)? = null
 
 
-    override fun bindView(view: RepoItemView) {
-        TODO("Not yet implemented")
-    }
+    override fun bindView(view: RepoItemView) =
+        view.setName(repos[view.pos].name)
 
-    override fun getCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getCount(): Int =
+        repos.size
 
 
 }
