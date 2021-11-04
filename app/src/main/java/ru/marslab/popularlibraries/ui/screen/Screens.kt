@@ -12,4 +12,8 @@ class Screens : IScreens {
 
     override fun userDetail(user: GithubUser): Screen =
         FragmentScreen { UserDetailFragment.newInstance(user) }
+
+    override fun userRepos(user: GithubUser): Screen {
+        TODO("Not yet implemented")
+    }
 }

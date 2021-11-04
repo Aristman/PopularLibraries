@@ -6,4 +6,5 @@ import ru.marslab.popularlibraries.domain.model.GithubUser
 interface IScreens {
     fun users(): Screen
     fun userDetail(user: GithubUser): Screen
+    fun userRepos(user: GithubUser): Screen
 }

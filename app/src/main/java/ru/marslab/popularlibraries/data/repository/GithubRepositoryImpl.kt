@@ -11,11 +11,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.marslab.popularlibraries.data.mapper.toDomain
 import ru.marslab.popularlibraries.data.retrofit.GithubService
+import ru.marslab.popularlibraries.domain.model.GithubRepo
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 
 private const val HTTP_LOG_TAG = "HTTP_LOG"
-
 
 class GithubRepositoryImpl : GithubRepository {
 
@@ -45,6 +45,13 @@ class GithubRepositoryImpl : GithubRepository {
         githubService.getUsers()
             .map { resultList ->
                 resultList.map { it.toDomain() }
+            }
+            .subscribeOn(Schedulers.io())
+
+    override fun getUserRepos(url: String): Single<List<GithubRepo>> =
+        githubService.getUserRepos(url)
+            .map { list ->
+                list.map { it.toDomain() }
             }
             .subscribeOn(Schedulers.io())
 
