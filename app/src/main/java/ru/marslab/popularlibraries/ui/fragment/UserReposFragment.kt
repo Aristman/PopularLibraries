@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
-import ru.marslab.popularlibraries.domain.presenter.RepoListPresenter
+import ru.marslab.popularlibraries.domain.presenter.ReposPresenter
+import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.view.UserReposView
 
@@ -31,7 +33,13 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
     private val binding: FragmentUserReposBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
-    private val presenter by moxyPresenter { RepoListPresenter(App.instance.router) }
+    private val presenter by moxyPresenter {
+        ReposPresenter(
+            App.instance.githubRepository,
+            App.instance.router,
+            Screens()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +52,27 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
 
     override fun init() {
         presenter.user = arguments?.getParcelable(USER_TAG)
-        presenter.user?.login?.let { showUserLogin(it) }
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = presenter.user?.login
+    }
+
+    override fun updateList() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showErrorToast(message: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showReload() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showMainContent() {
+        TODO("Not yet implemented")
     }
 
     override fun onBackPressed(): Boolean =

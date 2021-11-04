@@ -1,10 +1,9 @@
 package ru.marslab.popularlibraries.domain.presenter
 
-import com.github.terrakok.cicerone.Router
 import ru.marslab.popularlibraries.domain.adapter.RepoItemView
 import ru.marslab.popularlibraries.domain.model.GithubRepo
 
-class RepoListPresenter(router: Router) : IRepoListPresenter {
+class RepoListPresenter : IRepoListPresenter {
     val repos = mutableListOf<GithubRepo>()
     override var itemClickListener: ((RepoItemView) -> Unit)? = null
 
