@@ -21,5 +21,4 @@ class Screens : IScreens {
 
     override fun repoDetails(repo: GithubRepo): Screen =
         FragmentScreen { RepoDetailFragment.newInstance(repo) }
-
 }

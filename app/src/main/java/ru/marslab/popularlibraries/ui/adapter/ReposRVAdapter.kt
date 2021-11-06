@@ -34,7 +34,5 @@ class ReposRVAdapter(val presenter: IRepoListPresenter) :
         override fun setName(name: String) {
             binding.tvRepoName.text = name
         }
-
-
     }
 }

@@ -45,12 +45,10 @@ class GithubRepositoryImpl : GithubRepository {
             }
             .subscribeOn(Schedulers.io())
 
-    override fun getUserRepos(url: String): Single<List<GithubRepo>> =
-        githubService.getUserRepos(url)
+    override fun getUserRepos(user: GithubUser): Single<List<GithubRepo>> =
+        githubService.getUserRepos(user.reposUrl)
             .map { list ->
                 list.map { it.toDomain() }
             }
             .subscribeOn(Schedulers.io())
-
-
 }

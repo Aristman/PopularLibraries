@@ -39,7 +39,7 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
 
     private val presenter by moxyPresenter {
         UserReposPresenter(
-            App.instance.githubRepository,
+            App.instance.getGithubRepository(),
             App.instance.router,
             Screens()
         )
@@ -119,4 +119,3 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
         super.onDestroyView()
     }
 }
-

@@ -31,7 +31,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     private val presenter by moxyPresenter {
         UsersPresenter(
-            App.instance.githubRepository,
+            App.instance.getGithubRepository(),
             App.instance.router,
             Screens()
         )
@@ -110,4 +110,3 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onBackPressed(): Boolean =
         presenter.backPressed()
 }
-

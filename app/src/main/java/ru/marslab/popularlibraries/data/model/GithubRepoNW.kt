@@ -1,8 +1,6 @@
 package ru.marslab.popularlibraries.data.model
 
-
 import com.google.gson.annotations.SerializedName
-
 
 data class GithubRepoNW(
     @SerializedName("allow_forking")
