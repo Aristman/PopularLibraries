@@ -18,7 +18,6 @@ fun GithubRepoNW.toDomain(): GithubRepo =
         id = id,
         name = name,
         private = private,
-        language = language,
         forks = forks,
         description = description
     )

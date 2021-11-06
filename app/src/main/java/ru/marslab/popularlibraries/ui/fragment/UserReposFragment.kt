@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.marslab.popularlibraries.App
@@ -66,6 +67,15 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
     override fun init() {
         presenter.user = arguments?.getParcelable(USER_TAG)
         setToolbarTitle(presenter.user?.login)
+        initRv()
+        initListeners()
+    }
+
+    private fun initRv() {
+        binding.userRepos.run {
+            adapter = reposRVAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     private fun setToolbarTitle(text: String?) {

@@ -8,7 +8,6 @@ data class GithubRepo(
     val id: Int,
     val name: String,
     val private: Boolean,
-    val language: String,
     val forks: Int,
     val description: String?
 ) : Parcelable

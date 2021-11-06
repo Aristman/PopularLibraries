@@ -8,8 +8,13 @@ class UserListPresenter : IUserListPresenter {
 
     override var itemClickListener: ((UserItemView) -> Unit)? = null
 
-    override fun bindView(view: UserItemView) =
-        view.setLogin(users[view.pos].login)
+    override fun bindView(view: UserItemView) {
+        val githubUser = users[view.pos]
+        view.run {
+            setLogin(githubUser.login)
+            loadAvatar(githubUser.avatar)
+        }
+    }
 
     override fun getCount(): Int =
         users.size

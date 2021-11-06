@@ -43,7 +43,6 @@ class UserReposPresenter(
     }
 
     fun backPressed(): Boolean {
-        router.exit()
         return true
     }
 

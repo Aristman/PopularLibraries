@@ -97,8 +97,6 @@ data class GithubRepoNW(
     val language: String,
     @SerializedName("languages_url")
     val languagesUrl: String,
-    @SerializedName("license")
-    val license: String?,
     @SerializedName("merges_url")
     val mergesUrl: String,
     @SerializedName("milestones_url")
@@ -118,9 +116,7 @@ data class GithubRepoNW(
     @SerializedName("owner")
     val owner: Owner,
     @SerializedName("private")
-    val `private`: Boolean,
-    @SerializedName("pulls_url")
-    val pullsUrl: String,
+    val private: Boolean,
     @SerializedName("pushed_at")
     val pushedAt: String,
     @SerializedName("releases_url")

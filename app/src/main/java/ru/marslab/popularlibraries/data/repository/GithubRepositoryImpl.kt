@@ -1,7 +1,6 @@
 package ru.marslab.popularlibraries.data.repository
 
 import android.util.Log
-import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -31,9 +30,7 @@ class GithubRepositoryImpl : GithubRepository {
             .baseUrl(GithubService.GITHUB_BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(
-                GsonConverterFactory.create(
-                    GsonBuilder().setLenient().create()
-                )
+                GsonConverterFactory.create()
             )
             .client(githubOkhttpClient)
             .build()
