@@ -21,6 +21,10 @@ class UserReposPresenter(
         super.onFirstViewAttach()
         viewState.init()
         loadRepos()
+        repoListPresenter.itemClickListener = { repoItemView ->
+            val githubRepo = repoListPresenter.repos[repoItemView.pos]
+            router.navigateTo(screens.repoDetails(githubRepo))
+        }
     }
 
     private fun loadRepos() {

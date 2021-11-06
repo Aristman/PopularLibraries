@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -18,6 +17,7 @@ import ru.marslab.popularlibraries.domain.presenter.UserReposPresenter
 import ru.marslab.popularlibraries.ui.adapter.ReposRVAdapter
 import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
+import ru.marslab.popularlibraries.ui.util.setToolbarTitle
 import ru.marslab.popularlibraries.ui.view.UserReposView
 
 class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListener {
@@ -66,7 +66,7 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
 
     override fun init() {
         presenter.user = arguments?.getParcelable(USER_TAG)
-        setToolbarTitle(presenter.user?.login)
+        presenter.user?.login?.let { setToolbarTitle(it) }
         initRv()
         initListeners()
     }
@@ -76,10 +76,6 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
             adapter = reposRVAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-    }
-
-    private fun setToolbarTitle(text: String?) {
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = text
     }
 
     @SuppressLint("NotifyDataSetChanged")

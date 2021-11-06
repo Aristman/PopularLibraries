@@ -16,6 +16,7 @@ import ru.marslab.popularlibraries.domain.presenter.UsersPresenter
 import ru.marslab.popularlibraries.ui.adapter.UserRVAdapter
 import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
+import ru.marslab.popularlibraries.ui.util.setToolbarTitle
 import ru.marslab.popularlibraries.ui.view.UsersView
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
@@ -50,6 +51,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun init() {
+        setToolbarTitle(getString(R.string.app_name))
         initRV()
         initListeners()
     }
