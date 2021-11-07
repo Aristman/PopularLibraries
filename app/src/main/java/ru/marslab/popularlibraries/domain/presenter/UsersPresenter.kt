@@ -21,7 +21,7 @@ class UsersPresenter(
         loadData()
         userListPresenter.itemClickListener = { userItemView ->
             val githubUser = userListPresenter.users[userItemView.pos]
-            router.navigateTo(screens.userDetail(githubUser))
+            router.navigateTo(screens.userRepos(githubUser))
         }
     }
 
@@ -34,13 +34,12 @@ class UsersPresenter(
                 {
                     userListPresenter.users.addAll(it)
                     viewState.updateList()
+                    viewState.showMainContent()
+
                 },
                 {
                     viewState.showErrorToast(it.message)
                     viewState.showReload()
-                },
-                {
-                    viewState.showMainContent()
                 }
             )
     }

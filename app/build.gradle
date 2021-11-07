@@ -8,6 +8,7 @@ plugins {
 ext {
     moxyVersion = '2.2.2'
     ciceroneVersion = '7.1'
+    retrofitVersion = '2.9.0'
 }
 
 android {
@@ -67,5 +68,14 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.21"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 }
 

@@ -11,49 +11,38 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
-import ru.marslab.popularlibraries.databinding.FragmentUsersBinding
-import ru.marslab.popularlibraries.domain.presenter.UsersPresenter
-import ru.marslab.popularlibraries.ui.adapter.UserRVAdapter
+import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
+import ru.marslab.popularlibraries.domain.model.GithubUser
+import ru.marslab.popularlibraries.domain.presenter.UserReposPresenter
+import ru.marslab.popularlibraries.ui.adapter.ReposRVAdapter
 import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.util.setToolbarTitle
-import ru.marslab.popularlibraries.ui.view.UsersView
+import ru.marslab.popularlibraries.ui.view.UserReposView
 
-class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
-
+class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListener {
     companion object {
-        fun newInstance(): UsersFragment = UsersFragment()
+        private const val USER_TAG = "user_tag"
+        fun newInstance(user: GithubUser): UserReposFragment {
+            val args = Bundle().apply {
+                putParcelable(USER_TAG, user)
+            }
+            val fragment = UserReposFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 
-    private var _binding: FragmentUsersBinding? = null
-    private val binding: FragmentUsersBinding
+    private var _binding: FragmentUserReposBinding? = null
+    private val binding: FragmentUserReposBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
+        UserReposPresenter(
             App.instance.githubRepository,
             App.instance.router,
             Screens()
         )
-    }
-
-    private val userRVAdapter: UserRVAdapter by lazy {
-        UserRVAdapter(presenter.userListPresenter)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentUsersBinding.inflate(inflater, container, false)
-        return _binding?.root
-    }
-
-    override fun init() {
-        setToolbarTitle(getString(R.string.app_name))
-        initRV()
-        initListeners()
     }
 
     private fun initListeners() {
@@ -62,16 +51,36 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         }
     }
 
-    private fun initRV() {
-        binding.rvUsers.run {
+    private val reposRVAdapter: ReposRVAdapter by lazy {
+        ReposRVAdapter(presenter.repoListPresenter)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentUserReposBinding.inflate(inflater, container, false)
+        return _binding?.root
+    }
+
+    override fun init() {
+        presenter.user = arguments?.getParcelable(USER_TAG)
+        presenter.user?.login?.let { setToolbarTitle(it) }
+        initRv()
+        initListeners()
+    }
+
+    private fun initRv() {
+        binding.userRepos.run {
+            adapter = reposRVAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = userRVAdapter
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun updateList() {
-        userRVAdapter.notifyDataSetChanged()
+        reposRVAdapter.notifyDataSetChanged()
     }
 
     override fun showErrorToast(message: String?) {
@@ -81,7 +90,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun showLoading() {
         binding.run {
             loadingIndicator.visibility = View.VISIBLE
-            rvUsers.visibility = View.GONE
+            userRepos.visibility = View.GONE
             btnReload.visibility = View.GONE
         }
     }
@@ -89,7 +98,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun showReload() {
         binding.run {
             loadingIndicator.visibility = View.GONE
-            rvUsers.visibility = View.GONE
+            userRepos.visibility = View.GONE
             btnReload.visibility = View.VISIBLE
         }
     }
@@ -97,17 +106,17 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun showMainContent() {
         binding.run {
             loadingIndicator.visibility = View.GONE
-            rvUsers.visibility = View.VISIBLE
+            userRepos.visibility = View.VISIBLE
             btnReload.visibility = View.GONE
         }
     }
+
+    override fun onBackPressed(): Boolean =
+        presenter.backPressed()
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
-
-    override fun onBackPressed(): Boolean =
-        presenter.backPressed()
 }
 
