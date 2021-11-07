@@ -55,7 +55,6 @@ class App : Application() {
     val navigatorHolder = cicerone.getNavigatorHolder()
     val router = cicerone.router
 
-
     override fun onCreate() {
         super.onCreate()
         GithubDatabase.create(this)

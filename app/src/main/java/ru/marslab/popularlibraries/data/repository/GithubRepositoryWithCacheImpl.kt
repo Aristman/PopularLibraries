@@ -1,5 +1,6 @@
 package ru.marslab.popularlibraries.data.repository
 
+import android.util.Log
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.marslab.popularlibraries.data.mapper.toDB
@@ -47,6 +48,7 @@ class GithubRepositoryWithCacheImpl(
                                 githubDB.repoDao().saveRepos(repos.map { it.toDB(user.id) })
                                 repos.map { it.toDomain() }
                             }
+                                .doOnError { Log.d("MY_LOG", it.message.orEmpty()) }
                         }
                 } else {
                     githubDB.repoDao().getUserRepos(user.id)
@@ -55,5 +57,5 @@ class GithubRepositoryWithCacheImpl(
                         }
                 }
             }
-
+            .subscribeOn(Schedulers.io())
 }
