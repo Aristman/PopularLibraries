@@ -3,7 +3,7 @@ package ru.marslab.popularlibraries.data.mapper
 import ru.marslab.popularlibraries.data.model.GithubRepoNW
 import ru.marslab.popularlibraries.data.model.GithubUserNW
 import ru.marslab.popularlibraries.data.model.room.GithubRepoDB
-import ru.marslab.popularlibraries.data.model.room.GithubUsersDB
+import ru.marslab.popularlibraries.data.model.room.GithubUserDB
 import ru.marslab.popularlibraries.domain.model.GithubRepo
 import ru.marslab.popularlibraries.domain.model.GithubUser
 
@@ -25,8 +25,8 @@ fun GithubRepoNW.toDomain(): GithubRepo =
         description = description
     )
 
-fun GithubUserNW.toDB(): GithubUsersDB =
-    GithubUsersDB(
+fun GithubUserNW.toDB(): GithubUserDB =
+    GithubUserDB(
         id = id,
         login = login,
         avatar = avatarUrl,
@@ -46,5 +46,23 @@ fun GithubRepoNW.toDB(userId: Int): GithubRepoDB =
 fun GithubRepoDB.toDomain(): GithubRepo =
     GithubRepo(id, userId, name, isPrivate, forks, description)
 
-fun GithubUsersDB.toDomain(): GithubUser =
+fun GithubUserDB.toDomain(): GithubUser =
     GithubUser(id, login, avatar, reposUrl)
+
+fun GithubUser.toDB(): GithubUserDB =
+    GithubUserDB(
+        id = id,
+        login = login,
+        avatar = avatar ?: "",
+        reposUrl = reposUrl
+    )
+
+fun GithubRepo.toDB(): GithubRepoDB =
+    GithubRepoDB(
+        id = id,
+        userId = userId,
+        name = name,
+        isPrivate = private,
+        forks = forks,
+        description = description ?: ""
+    )

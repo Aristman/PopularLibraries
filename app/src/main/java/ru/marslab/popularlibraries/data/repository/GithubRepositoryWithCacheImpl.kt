@@ -1,21 +1,19 @@
 package ru.marslab.popularlibraries.data.repository
 
-import android.util.Log
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import ru.marslab.popularlibraries.data.mapper.toDB
 import ru.marslab.popularlibraries.data.mapper.toDomain
 import ru.marslab.popularlibraries.data.retrofit.GithubService
-import ru.marslab.popularlibraries.data.room.GithubDatabase
 import ru.marslab.popularlibraries.domain.model.GithubRepo
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.domain.util.INetworkStatus
+import ru.marslab.popularlibraries.domain.util.IRoomGithubCache
 
 class GithubRepositoryWithCacheImpl(
     private val apiService: GithubService,
-    private val githubDB: GithubDatabase,
-    private val networkStatus: INetworkStatus
+    private val networkStatus: INetworkStatus,
+    private val roomCache: IRoomGithubCache
 ) : GithubRepository {
 
     override fun getUsers(): Single<List<GithubUser>> =
@@ -25,15 +23,12 @@ class GithubRepositoryWithCacheImpl(
                     apiService.getUsers()
                         .flatMap { users ->
                             Single.fromCallable {
-                                githubDB.userDao().saveUsers(users.map { it.toDB() })
+                                roomCache.cacheUsers(users.map { it.toDomain() })
                                 users.map { it.toDomain() }
                             }
                         }
                 } else {
-                    githubDB.userDao().getAllUsers()
-                        .map { usersDb ->
-                            usersDb.map { it.toDomain() }
-                        }
+                    roomCache.getCachedUsers()
                 }
             }
             .subscribeOn(Schedulers.io())
@@ -45,16 +40,12 @@ class GithubRepositoryWithCacheImpl(
                     apiService.getUserRepos(user.reposUrl)
                         .flatMap { repos ->
                             Single.fromCallable {
-                                githubDB.repoDao().saveRepos(repos.map { it.toDB(user.id) })
+                                roomCache.cacheRepos(repos.map { it.toDomain() })
                                 repos.map { it.toDomain() }
                             }
-                                .doOnError { Log.d("MY_LOG", it.message.orEmpty()) }
                         }
                 } else {
-                    githubDB.repoDao().getUserRepos(user.id)
-                        .map { reposDb ->
-                            reposDb.map { it.toDomain() }
-                        }
+                    roomCache.getCachedRepos(user.id)
                 }
             }
             .subscribeOn(Schedulers.io())

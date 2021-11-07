@@ -7,19 +7,19 @@ import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import io.reactivex.Single
-import ru.marslab.popularlibraries.data.model.room.GithubUsersDB
+import ru.marslab.popularlibraries.data.model.room.GithubUserDB
 
 @Dao
 interface GithubUserDao {
     @Query("SELECT * FROM github_users")
-    fun getAllUsers(): Single<List<GithubUsersDB>>
+    fun getAllUsers(): Single<List<GithubUserDB>>
 
     @Insert(onConflict = IGNORE)
-    fun saveUser(user: GithubUsersDB)
+    fun saveUser(user: GithubUserDB)
 
     @Insert(onConflict = REPLACE)
-    fun saveUsers(users: List<GithubUsersDB>)
+    fun saveUsers(users: List<GithubUserDB>)
 
     @Delete
-    fun removeUser(user: GithubUsersDB)
+    fun removeUser(user: GithubUserDB)
 }

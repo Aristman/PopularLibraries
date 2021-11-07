@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "github_user_repos",
     foreignKeys = [
         ForeignKey(
-            entity = GithubUsersDB::class,
+            entity = GithubUserDB::class,
             parentColumns = ["id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE

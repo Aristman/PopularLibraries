@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.marslab.popularlibraries.data.model.room.GithubRepoDB
-import ru.marslab.popularlibraries.data.model.room.GithubUsersDB
+import ru.marslab.popularlibraries.data.model.room.GithubUserDB
 
-@Database(entities = [GithubUsersDB::class, GithubRepoDB::class], version = 1)
+@Database(entities = [GithubUserDB::class, GithubRepoDB::class], version = 1)
 abstract class GithubDatabase : RoomDatabase() {
     companion object {
         private const val DB_NAME = "database.db"

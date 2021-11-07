@@ -10,9 +10,11 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.marslab.popularlibraries.data.repository.GithubRepositoryWithCacheImpl
+import ru.marslab.popularlibraries.data.repository.RoomGithubCacheImpl
 import ru.marslab.popularlibraries.data.retrofit.GithubService
 import ru.marslab.popularlibraries.data.room.GithubDatabase
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
+import ru.marslab.popularlibraries.domain.util.IRoomGithubCache
 import ru.marslab.popularlibraries.ui.util.NetworkStatus
 
 class App : Application() {
@@ -49,8 +51,11 @@ class App : Application() {
         NetworkStatus(baseContext)
     }
 
+    fun roomCacheRepository(): IRoomGithubCache =
+        RoomGithubCacheImpl(GithubDatabase.getInstance())
+
     fun getGithubRepository(): GithubRepository =
-        GithubRepositoryWithCacheImpl(githubService, GithubDatabase.getInstance(), networkStatus)
+        GithubRepositoryWithCacheImpl(githubService, networkStatus, roomCacheRepository())
 
     val navigatorHolder = cicerone.getNavigatorHolder()
     val router = cicerone.router
