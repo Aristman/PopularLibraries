@@ -7,10 +7,6 @@ import ru.marslab.popularlibraries.data.model.GithubRepoNW
 import ru.marslab.popularlibraries.data.model.GithubUserNW
 
 interface GithubService {
-    companion object {
-        const val GITHUB_BASE_URL = "https://api.github.com"
-    }
-
     @GET("/users")
     fun getUsers(): Single<List<GithubUserNW>>
 

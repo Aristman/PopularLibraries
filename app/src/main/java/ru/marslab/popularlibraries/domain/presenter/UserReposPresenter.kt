@@ -7,14 +7,20 @@ import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
 import ru.marslab.popularlibraries.ui.view.UserReposView
+import javax.inject.Inject
 
-class UserReposPresenter(
-    private val userRepository: GithubRepository,
-    private val router: Router,
-    private val screens: IScreens
-) : MvpPresenter<UserReposView>() {
+class UserReposPresenter : MvpPresenter<UserReposView>() {
     var user: GithubUser? = null
     val repoListPresenter = RepoListPresenter()
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var githubRepository: GithubRepository
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -29,7 +35,7 @@ class UserReposPresenter(
     private fun loadRepos() {
         viewState.showLoading()
         user?.let {
-            userRepository.getUserRepos(it)
+            githubRepository.getUserRepos(it)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { result ->

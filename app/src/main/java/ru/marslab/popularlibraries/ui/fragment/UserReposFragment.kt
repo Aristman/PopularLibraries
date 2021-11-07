@@ -9,13 +9,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.presenter.UserReposPresenter
 import ru.marslab.popularlibraries.ui.adapter.ReposRVAdapter
-import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.util.setToolbarTitle
 import ru.marslab.popularlibraries.ui.view.UserReposView
@@ -37,13 +35,7 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
     private val binding: FragmentUserReposBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
-    private val presenter by moxyPresenter {
-        UserReposPresenter(
-            App.instance.getGithubRepository(),
-            App.instance.router,
-            Screens()
-        )
-    }
+    private val presenter by moxyPresenter { UserReposPresenter() }
 
     private fun initListeners() {
         binding.btnReload.setOnClickListener {
