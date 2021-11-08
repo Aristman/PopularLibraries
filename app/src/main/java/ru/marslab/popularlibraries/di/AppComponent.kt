@@ -32,5 +32,4 @@ interface AppComponent {
     fun inject(userDetailFragment: UserDetailFragment)
     fun inject(userReposPresenter: UserReposPresenter)
     fun inject(userReposFragment: UserReposFragment)
-//    fun inject()
 }
