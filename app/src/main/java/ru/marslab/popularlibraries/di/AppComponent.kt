@@ -22,14 +22,15 @@ import javax.inject.Singleton
         ResourceModule::class
     ]
 )
+
 interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(userDetailPresenter: UserDetailPresenter)
-    fun inject(userReposPresenter: UserReposPresenter)
-    fun inject(usersPresenter: UsersPresenter)
-    fun inject(userDetailFragment: UserDetailFragment)
-    fun inject(userReposFragment: UserReposFragment)
     fun inject(usersFragment: UsersFragment)
+    fun inject(usersPresenter: UsersPresenter)
+    fun inject(userDetailPresenter: UserDetailPresenter)
+    fun inject(userDetailFragment: UserDetailFragment)
+    fun inject(userReposPresenter: UserReposPresenter)
+    fun inject(userReposFragment: UserReposFragment)
 //    fun inject()
 }

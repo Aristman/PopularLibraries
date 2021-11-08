@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
@@ -25,7 +26,9 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
             val args = Bundle().apply {
                 putParcelable(USER_TAG, user)
             }
-            val fragment = UserReposFragment()
+            val fragment = UserReposFragment().apply {
+                App.instance.appComponent.inject(this)
+            }
             fragment.arguments = args
             return fragment
         }
@@ -35,7 +38,11 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
     private val binding: FragmentUserReposBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
-    private val presenter by moxyPresenter { UserReposPresenter() }
+    private val presenter by moxyPresenter {
+        UserReposPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
 
     private fun initListeners() {
         binding.btnReload.setOnClickListener {

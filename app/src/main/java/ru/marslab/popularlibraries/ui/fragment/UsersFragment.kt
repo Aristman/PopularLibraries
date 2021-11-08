@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUsersBinding
 import ru.marslab.popularlibraries.domain.presenter.UsersPresenter
@@ -20,14 +21,20 @@ import ru.marslab.popularlibraries.ui.view.UsersView
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     companion object {
-        fun newInstance(): UsersFragment = UsersFragment()
+        fun newInstance(): UsersFragment = UsersFragment().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private var _binding: FragmentUsersBinding? = null
     private val binding: FragmentUsersBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
-    private val presenter by moxyPresenter { UsersPresenter() }
+    private val presenter by moxyPresenter {
+        UsersPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
 
     private val userRVAdapter: UserRVAdapter by lazy {
         UserRVAdapter(presenter.userListPresenter)

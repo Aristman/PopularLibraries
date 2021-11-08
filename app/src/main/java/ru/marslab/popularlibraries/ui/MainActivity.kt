@@ -5,6 +5,7 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.ActivityMainBinding
 import ru.marslab.popularlibraries.domain.presenter.MainPresenter
@@ -20,13 +21,18 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
-
     private val navigator = AppNavigator(this, R.id.main_container)
-    private val presenter by moxyPresenter { MainPresenter() }
+
+    private val presenter by moxyPresenter {
+        MainPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        App.instance.appComponent.inject(this)
     }
 
     override fun onResumeFragments() {
