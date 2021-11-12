@@ -16,7 +16,6 @@ class UserReposPresenter(
     var user: GithubUser? = null
     val repoListPresenter = RepoListPresenter()
 
-
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
@@ -29,7 +28,7 @@ class UserReposPresenter(
 
     private fun loadRepos() {
         viewState.showLoading()
-        user?.reposUrl?.let {
+        user?.let {
             userRepository.getUserRepos(it)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

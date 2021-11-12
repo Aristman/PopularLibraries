@@ -6,5 +6,5 @@ import ru.marslab.popularlibraries.domain.model.GithubUser
 
 interface GithubRepository {
     fun getUsers(): Single<List<GithubUser>>
-    fun getUserRepos(url: String): Single<List<GithubRepo>>
+    fun getUserRepos(user: GithubUser): Single<List<GithubRepo>>
 }

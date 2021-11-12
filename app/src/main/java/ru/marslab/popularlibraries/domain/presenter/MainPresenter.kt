@@ -17,4 +17,3 @@ class MainPresenter(private val router: Router, private val screens: IScreens) :
         router.exit()
     }
 }
-
