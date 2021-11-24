@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Popular libraries</string>
+    <string name="counter_one">Счетчик 1</string>
+    <string name="counter_two">Счетчик 2</string>
+    <string name="counter_three">Счетчик 3</string>
+    <string name="init_button_text">0</string>
+    <string name="binding_create_error">Ошибка создания биндинга: %s</string>
+    <string name="repeat_loading">Повторить загрузку</string>
+    <string name="repo_name">Название репозитория</string>
+    <string name="fork">Форки</string>
+    <string name="description">Описание</string>
 </resources>
