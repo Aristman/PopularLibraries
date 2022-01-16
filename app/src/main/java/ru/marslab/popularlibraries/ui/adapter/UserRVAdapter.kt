@@ -44,6 +44,5 @@ class UserRVAdapter(val presenter: IUserListPresenter) :
                 .placeholder(R.drawable.ic_baseline_browser_not_supported_24)
                 .into(binding.userAvatar)
         }
-
     }
 }

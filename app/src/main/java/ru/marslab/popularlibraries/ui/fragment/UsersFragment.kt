@@ -14,7 +14,6 @@ import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUsersBinding
 import ru.marslab.popularlibraries.domain.presenter.UsersPresenter
 import ru.marslab.popularlibraries.ui.adapter.UserRVAdapter
-import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.util.setToolbarTitle
 import ru.marslab.popularlibraries.ui.view.UsersView
@@ -22,7 +21,9 @@ import ru.marslab.popularlibraries.ui.view.UsersView
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     companion object {
-        fun newInstance(): UsersFragment = UsersFragment()
+        fun newInstance(): UsersFragment = UsersFragment().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private var _binding: FragmentUsersBinding? = null
@@ -30,11 +31,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
-            App.instance.githubRepository,
-            App.instance.router,
-            Screens()
-        )
+        UsersPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private val userRVAdapter: UserRVAdapter by lazy {
@@ -110,4 +109,3 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onBackPressed(): Boolean =
         presenter.backPressed()
 }
-

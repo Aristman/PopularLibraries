@@ -15,7 +15,6 @@ import ru.marslab.popularlibraries.databinding.FragmentUserReposBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
 import ru.marslab.popularlibraries.domain.presenter.UserReposPresenter
 import ru.marslab.popularlibraries.ui.adapter.ReposRVAdapter
-import ru.marslab.popularlibraries.ui.screen.Screens
 import ru.marslab.popularlibraries.ui.util.BackButtonListener
 import ru.marslab.popularlibraries.ui.util.setToolbarTitle
 import ru.marslab.popularlibraries.ui.view.UserReposView
@@ -27,7 +26,9 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
             val args = Bundle().apply {
                 putParcelable(USER_TAG, user)
             }
-            val fragment = UserReposFragment()
+            val fragment = UserReposFragment().apply {
+                App.instance.appComponent.inject(this)
+            }
             fragment.arguments = args
             return fragment
         }
@@ -38,11 +39,9 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
     private val presenter by moxyPresenter {
-        UserReposPresenter(
-            App.instance.githubRepository,
-            App.instance.router,
-            Screens()
-        )
+        UserReposPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private fun initListeners() {
@@ -119,4 +118,3 @@ class UserReposFragment : MvpAppCompatFragment(), UserReposView, BackButtonListe
         super.onDestroyView()
     }
 }
-

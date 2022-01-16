@@ -7,13 +7,19 @@ import moxy.MvpPresenter
 import ru.marslab.popularlibraries.domain.repository.GithubRepository
 import ru.marslab.popularlibraries.ui.screen.IScreens
 import ru.marslab.popularlibraries.ui.view.UsersView
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val userRepository: GithubRepository,
-    private val router: Router,
-    private val screens: IScreens
-) : MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
     val userListPresenter = UserListPresenter()
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var githubRepository: GithubRepository
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -28,14 +34,13 @@ class UsersPresenter(
     @SuppressLint("CheckResult")
     private fun loadData() {
         viewState.showLoading()
-        userRepository.getUsers()
+        githubRepository.getUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     userListPresenter.users.addAll(it)
                     viewState.updateList()
                     viewState.showMainContent()
-
                 },
                 {
                     viewState.showErrorToast(it.message)

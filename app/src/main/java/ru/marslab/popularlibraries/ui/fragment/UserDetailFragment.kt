@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.marslab.popularlibraries.App
 import ru.marslab.popularlibraries.R
 import ru.marslab.popularlibraries.databinding.FragmentUserDetailBinding
 import ru.marslab.popularlibraries.domain.model.GithubUser
@@ -31,7 +30,7 @@ class UserDetailFragment : MvpAppCompatFragment(), UserDetailView, BackButtonLis
     private val binding: FragmentUserDetailBinding
         get() = checkNotNull(_binding) { getString(R.string.binding_create_error, this::class) }
 
-    private val presenter by moxyPresenter { UserDetailPresenter(App.instance.router) }
+    private val presenter by moxyPresenter { UserDetailPresenter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
